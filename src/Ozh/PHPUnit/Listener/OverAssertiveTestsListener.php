@@ -125,7 +125,6 @@ class OverAssertiveTestsListener implements \PHPUnit_Framework_TestListener
     {
         if (!$test instanceof \PHPUnit_Framework_TestCase) return;
 
-        $threshold = $this->alertThreshold;
         $assertions = \PHPUnit_Framework_Assert::getCount();
         
         if ($assertions > $this->alertThreshold) {
