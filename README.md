@@ -10,6 +10,7 @@ in several sub tests.
 which tests have "too many" assertions, where "too many" is what you define, to
 help you inspect and maybe refactor some tests.
 
+![overassertive](https://cloud.githubusercontent.com/assets/223647/7969423/0d90aaee-0a37-11e5-9f40-a7d29c613017.png)
 
 ## Usage
 
