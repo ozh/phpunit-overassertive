@@ -3,11 +3,11 @@
 namespace Ozh\PHPUnit\Listener;
 
 /**
- * This PHPUnit extension reports PHPUnit tests which contain "too many" assertions
+ * MEH
  *
- * Also, this code follows PSR style guide and I fucking loathe it.
+ * Also, this code follows PSR style guide and I fucking hate it.
  */
-class OverAssertiveTestsListener implements \PHPUnit_Framework_TestListener
+class OverAssertiveTestsListener implements \PHPUnit\Framework\TestListener
 {
     /**
      * Internal tracking for test suites.
@@ -40,7 +40,7 @@ class OverAssertiveTestsListener implements \PHPUnit_Framework_TestListener
      * @var array
      */
     protected $assertive = array();
-    
+
     /**
      * Construct a new instance.
      *
@@ -54,91 +54,103 @@ class OverAssertiveTestsListener implements \PHPUnit_Framework_TestListener
     /**
      * An error occurred.
      *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \Exception              $e
+     * @param \PHPUnit\Framework\Test $test
+     * @param Throwable              $e
      * @param float                   $time
      */
-    public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addError(\PHPUnit\Framework\Test $test, \Throwable $e, $time) :void
     {
     }
 
     /**
      * A failure occurred.
      *
-     * @param \PHPUnit_Framework_Test                 $test
+     * @param \PHPUnit\Framework\Test                 $test
      * @param \PHPUnit_Framework_AssertionFailedError $e
      * @param float                                   $time
      */
-    public function addFailure(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_AssertionFailedError $e, $time)
+    public function addFailure(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\AssertionFailedError $e, $time) :void
     {
     }
 
     /**
      * Incomplete test.
      *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \Exception              $e
+     * @param \PHPUnit\Framework\Test $test
+     * @param Throwable              $e
      * @param float                   $time
      */
-    public function addIncompleteTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addIncompleteTest(\PHPUnit\Framework\Test $test, \Throwable $e, $time) :void
     {
     }
 
     /**
      * Risky test.
      *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \Exception              $e
+     * @param \PHPUnit\Framework\Test $test
+     * @param Throwable              $e
      * @param float                   $time
      * @since  Method available since Release 4.0.0
      */
-    public function addRiskyTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addRiskyTest(\PHPUnit\Framework\Test $test, \Throwable $e, $time) :void
     {
     }
 
     /**
      * Skipped test.
      *
-     * @param \PHPUnit_Framework_Test $test
-     * @param \Exception              $e
+     * @param \PHPUnit\Framework\Test $test
+     * @param Throwable              $e
      * @param float                   $time
      */
-    public function addSkippedTest(\PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addSkippedTest(\PHPUnit\Framework\Test $test, \Throwable $e, $time) :void
+    {
+    }
+
+    /**
+     * Warning.
+     *
+     * @param \PHPUnit\Framework\Test $test
+     * @param Throwable              $e
+     * @param float                   $time
+     */
+    public function addWarning(\PHPUnit\Framework\Test $test, \PHPUnit\Framework\Warning $e, $time) :void
     {
     }
 
     /**
      * A test started.
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      */
-    public function startTest(\PHPUnit_Framework_Test $test)
+    public function startTest(\PHPUnit\Framework\Test $test) :void
     {
     }
 
     /**
      * A test ended.
      *
-     * @param \PHPUnit_Framework_Test $test
+     * @param \PHPUnit\Framework\Test $test
      */
-    public function endTest(\PHPUnit_Framework_Test $test, $time)
+    public function endTest(\PHPUnit\Framework\Test $test, $time) :void
     {
-        if (!$test instanceof \PHPUnit_Framework_TestCase) return;
+        if (!$test instanceof \PHPUnit\Framework\TestCase) return;
 
-        $assertions = \PHPUnit_Framework_Assert::getCount();
-        
+        $threshold = $this->alertThreshold;
+        $assertions = \PHPUnit\Framework\Assert::getCount();
+
         if ($assertions > $this->alertThreshold) {
             $this->addAssertiveTest($test, $assertions);
         }
-        
+
     }
 
     /**
      * A test suite started.
      *
-     * @param \PHPUnit_Framework_TestSuite $suite
+     * @param \PHPUnit\Framework\TestSuite $suite
      */
-    public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
+    public function startTestSuite(\PHPUnit\Framework\TestSuite $suite) :void
     {
         $this->suites++;
     }
@@ -146,9 +158,9 @@ class OverAssertiveTestsListener implements \PHPUnit_Framework_TestListener
     /**
      * A test suite ended.
      *
-     * @param \PHPUnit_Framework_TestSuite $suite
+     * @param \PHPUnit\Framework\TestSuite $suite
      */
-    public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
+    public function endTestSuite(\PHPUnit\Framework\TestSuite $suite) :void
     {
         $this->suites--;
 
@@ -164,10 +176,10 @@ class OverAssertiveTestsListener implements \PHPUnit_Framework_TestListener
     /**
      * Stores a test as over assertive.
      *
-     * @param \PHPUnit_Framework_TestCase $test
+     * @param \PHPUnit\Framework\TestCase $test
      * @param int                         $assertions Number of assertions
      */
-    protected function addAssertiveTest(\PHPUnit_Framework_TestCase $test, $assertions)
+    protected function addAssertiveTest(\PHPUnit\Framework\TestCase $test, $assertions) :void
     {
         $label = $this->makeLabel($test);
         $this->assertive[$label] = $assertions;
@@ -186,10 +198,10 @@ class OverAssertiveTestsListener implements \PHPUnit_Framework_TestListener
     /**
      * Label for describing a test.
      *
-     * @param \PHPUnit_Framework_TestCase $test
+     * @param \PHPUnit\Framework\TestCase $test
      * @return string
      */
-    protected function makeLabel(\PHPUnit_Framework_TestCase $test)
+    protected function makeLabel(\PHPUnit\Framework\TestCase $test)
     {
         return sprintf('%s:%s', get_class($test), $test->getName());
     }
@@ -229,7 +241,7 @@ class OverAssertiveTestsListener implements \PHPUnit_Framework_TestListener
     {
         return $count <= 1 ? 'assertion' : 'assertions';
     }
-    
+
 
     /**
      * Renders test report header.
@@ -253,7 +265,7 @@ class OverAssertiveTestsListener implements \PHPUnit_Framework_TestListener
             $assertions = array_shift($assertive);
             $display = str_pad($assertions, $max, " ", STR_PAD_LEFT);
             $line = str_pad($i, strlen($length), " ", STR_PAD_LEFT);
-            
+
             echo sprintf(" %s. %s %s in test %s\n", $line, $display, $this->pluralizeAssertion($assertions), $label);
         }
     }
